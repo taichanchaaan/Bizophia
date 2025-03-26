@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bizophia Test Page</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="./assets/index-829ebc8c.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    .test-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #app-container {
+      margin-top: 30px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      min-height: 300px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bizophia Test Page</h1>
+    <p>This page tests if the Bizophia assets are loading correctly.</p>
+    
+    <button class="test-button" id="load-app">Load App</button>
+    
+    <div id="app-container">
+      <div id="app"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('load-app').addEventListener('click', function() {
+      // Load the main JavaScript file
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = './assets/index-c0381769.js';
+      script.onload = function() {
+        console.log('Main JS file loaded successfully');
+      };
+      script.onerror = function() {
+        console.error('Failed to load main JS file');
+        document.getElementById('app-container').innerHTML = '<p style="color: red;">Error: Failed to load the main JavaScript file.</p>';
+      };
+      document.body.appendChild(script);
+    });
+  </script>
+</body>
+</html>

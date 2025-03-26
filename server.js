@@ -18,24 +18,35 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve the index.html for the root path
+app.get('/', (req, res) => {
+  console.log('Serving index.html for root path');
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Serve static files with proper MIME types
 app.use(express.static(__dirname, {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.js')) {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.js')) {
       res.setHeader('Content-Type', 'application/javascript');
-    } else if (path.endsWith('.css')) {
+      console.log(`Serving JS file: ${path.basename(filePath)}`);
+    } else if (filePath.endsWith('.css')) {
       res.setHeader('Content-Type', 'text/css');
+      console.log(`Serving CSS file: ${path.basename(filePath)}`);
     }
   }
 }));
 
-// Handle SPA routing - redirect all requests to index.html
-app.get('*', (req, res, next) => {
-  // Skip API routes and asset files
-  if (req.url.startsWith('/api') || req.url.includes('.')) {
-    return next();
+// Handle SPA routing - redirect all other requests to index.html
+app.get('*', (req, res) => {
+  // Skip if the file exists
+  const filePath = path.join(__dirname, req.url);
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    console.log(`Serving existing file: ${req.url}`);
+    return res.sendFile(filePath);
   }
   
+  console.log(`Redirecting ${req.url} to index.html (SPA routing)`);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
